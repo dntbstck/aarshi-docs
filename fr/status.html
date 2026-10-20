@@ -1,104 +1,257 @@
 <!doctype html>
 <html lang="fr">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Vérifier un projet · aarshi</title>
-  <link rel="stylesheet" href="../style.css">
-  <link rel="icon" type="image/png" href="../aarshi-icon.png">
-  <script>
-    (function () {
-      document.documentElement.classList.add("js");
-      var saved = localStorage.getItem("aarshi-theme");
-      if (saved) document.documentElement.dataset.theme = saved;
-    })();
-  </script>
-</head>
-<body>
-<header class="topbar">
-  <a class="topbar-brand" href="index.html"><img src="../aarshi-icon.png" alt="" width="32" height="32">aarshi</a>
-  <button type="button" class="menu-toggle" id="menu-toggle" aria-expanded="false" aria-controls="sidebar" aria-label="Ouvrir le menu"><span class="menu-icon" aria-hidden="true"><span></span><span></span><span></span></span></button>
-</header>
-<div class="scrim" id="scrim" hidden></div>
-<div class="shell">
-  <aside class="side" id="sidebar">
-    <div class="brand">
-      <a href="https://github.com/aaimeraud/aarshi" target="_blank" rel="noopener" title="Dépôt GitHub"><img src="../aarshi-icon.png" alt="" width="32" height="32">aarshi</a>
-      <a class="repo" href="https://github.com/aaimeraud/aarshi" target="_blank" rel="noopener">Dépôt GitHub ↗</a>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Vérifier un projet · aarshi</title>
+    <link rel="stylesheet" href="../style.css" />
+    <link rel="icon" type="image/png" href="../icon.png" />
+    <script>
+      (function () {
+        var saved = localStorage.getItem("aarshi-theme");
+        if (saved) document.documentElement.dataset.theme = saved;
+      })();
+    </script>
+  </head>
+  <body>
+    <div class="shell">
+      <aside class="side">
+        <div class="brand">
+          <a
+            href="https://github.com/aaimeraud/aarshi"
+            target="_blank"
+            rel="noopener"
+            title="Dépôt GitHub"
+            ><img src="../icon.png" alt="" width="32" height="32" />aarshi</a
+          >
+          <a
+            class="repo"
+            href="https://github.com/aaimeraud/aarshi"
+            target="_blank"
+            rel="noopener"
+            >Dépôt GitHub ↗</a
+          >
+        </div>
+        <nav aria-label="Documentation">
+          <ul>
+            <li><a href="index.html">Vue d'ensemble</a></li>
+            <li><a href="config.html">Le fichier aarshi.toml</a></li>
+            <li><a href="commands.html">Commandes</a></li>
+            <li><a href="workflow.html">Exemple pas à pas</a></li>
+            <li>
+              <a href="status.html" aria-current="page">Vérifier un projet</a>
+            </li>
+            <li><a href="troubleshooting.html">Dépannage</a></li>
+            <li><a href="contributing.html">Contribuer</a></li>
+          </ul>
+        </nav>
+        <nav class="lang" aria-label="Langue">
+          <a href="../en/status.html" hreflang="en" aria-current="false"
+            >English</a
+          >
+          <a href="../fr/status.html" hreflang="fr" aria-current="true"
+            >Français</a
+          >
+        </nav>
+        <button
+          type="button"
+          class="theme"
+          id="theme"
+          data-dark="Mode sombre"
+          data-light="Mode clair"
+        >
+          Mode sombre
+        </button>
+      </aside>
+      <main>
+        <h1>Vérifier un projet</h1>
+        <p class="lead">
+          <code>aarshi status</code> lit votre projet et signale ce qui manque
+          ou ce qui ne va pas. C'est une vérification en lecture seule : elle ne
+          modifie aucun fichier, vous pouvez la lancer aussi souvent que vous
+          voulez. <code>aarshi check</code> est un raccourci qui donne le même
+          rapport.
+        </p>
+
+        <h2>Lire le rapport</h2>
+        <p>
+          Le rapport contient une section par sujet, dans cet ordre :
+          <code>config</code>, <code>i18n</code>, <code>pages</code>,
+          <code>sections</code>, <code>components</code> et
+          <code>dependencies</code>. Un sujet sans rien à signaler affiche un
+          <code>✓</code>. Sinon, ses constats sont listés dessous :
+        </p>
+        <dl>
+          <dt>error</dt>
+          <dd>
+            Quelque chose est cassé ou manque. Le rapport le compte, et le code
+            de sortie est <code>1</code>.
+          </dd>
+          <dt>todo</dt>
+          <dd>
+            Quelque chose n'est pas terminé, comme une traduction vide. Le
+            rapport le compte, mais le code de sortie reste <code>0</code>.
+          </dd>
+        </dl>
+        <p>
+          La dernière ligne donne le verdict sur tout le projet :
+          <code>✓ project is conformant</code>,
+          <code>✓ project is conformant (N to do)</code> ou
+          <code>error: N errors, M to do</code>.
+        </p>
+
+        <h2>Codes de sortie</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Code</th>
+              <th>Signification</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>0</code></td>
+              <td>
+                Aucune erreur. Des todos seuls donnent encore <code>0</code>.
+              </td>
+            </tr>
+            <tr>
+              <td><code>1</code></td>
+              <td>Au moins une erreur a été trouvée.</td>
+            </tr>
+            <tr>
+              <td><code>2</code></td>
+              <td>
+                Le projet ne peut pas être lu : <code>aarshi.toml</code> est
+                absent, illisible ou invalide. Le message part sur la sortie
+                d'erreur, et rien n'est écrit sur la sortie standard.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          Le code de sortie sert dans les scripts et l'intégration continue : un
+          code différent de zéro arrête le pipeline.
+        </p>
+
+        <h2>Options</h2>
+        <dl>
+          <dt><code>--dimension &lt;nom&gt;</code></dt>
+          <dd>
+            N'affiche que certains sujets. Répétez l'option ou séparez les noms
+            par des virgules : <code>--dimension config,i18n</code>. Le filtre
+            ne change que l'affichage : le code de sortie et le résumé couvrent
+            toujours tout le projet, et une ligne indique combien de constats
+            sont masqués.
+          </dd>
+          <dt><code>--errors-only</code></dt>
+          <dd>
+            Masque les lignes <code>todo</code>. Le verdict et le code de sortie
+            ne changent pas.
+          </dd>
+          <dt><code>--json</code></dt>
+          <dd>
+            Affiche un document JSON unique à la place du rapport, pour d'autres
+            outils. Il contient un champ
+            <code>format_version</code> (actuellement <code>1</code>), un
+            <code>summary</code> global, et la liste des constats avec leur
+            règle, leur gravité et leur emplacement. Avec le code de sortie
+            <code>2</code>, rien n'est écrit sur la sortie standard.
+          </dd>
+        </dl>
+
+        <h2>Les sujets</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Sujet</th>
+              <th>Ce qu'il vérifie</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>config</code></td>
+              <td>
+                Les fichiers et dossiers de base, <code>aarshi.toml</code>, le
+                branchement de Tailwind, et les options cohérentes avec les
+                fichiers.
+              </td>
+            </tr>
+            <tr>
+              <td><code>i18n</code></td>
+              <td>
+                Les dictionnaires : mêmes clés dans chaque langue, valeurs
+                vides, doublons, langues déclarées dans les fichiers de
+                configuration.
+              </td>
+            </tr>
+            <tr>
+              <td><code>pages</code></td>
+              <td>
+                Que chaque route a une vue, que chaque vue a une route, et que
+                le plan du site liste les pages.
+              </td>
+            </tr>
+            <tr>
+              <td><code>sections</code></td>
+              <td>
+                Que chaque section est importée et utilisée dans sa vue, et que
+                ses clés existent.
+              </td>
+            </tr>
+            <tr>
+              <td><code>components</code></td>
+              <td>
+                Les imports de vos composants, et que chaque icône a son
+                composant.
+              </td>
+            </tr>
+            <tr>
+              <td><code>dependencies</code></td>
+              <td>
+                Que les paquets importés par votre code sont déclarés dans
+                <code>package.json</code>, et que le fichier de verrouillage
+                correspond à <code>package_manager</code>.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          Chaque sujet liste ses règles exactes dans le fichier
+          <code>CONVENTIONS.fr.md</code> du dépôt.
+        </p>
+
+        <nav class="pager" aria-label="Navigation entre les pages">
+          <a class="prev" href="workflow.html"
+            ><span>Précédent</span>Exemple pas à pas</a
+          ><a class="next" href="troubleshooting.html"
+            ><span>Suivant</span>Dépannage</a
+          >
+        </nav>
+      </main>
     </div>
-    <nav aria-label="Documentation">
-      <ul>
-        <li><a href="index.html">Vue d'ensemble</a></li>
-        <li><a href="config.html">Le fichier aarshi.toml</a></li>
-        <li><a href="commands.html">Commandes</a></li>
-        <li><a href="workflow.html">Exemple pas à pas</a></li>
-        <li><a href="status.html" aria-current="page">Vérifier un projet</a></li>
-        <li><a href="troubleshooting.html">Dépannage</a></li>
-        <li><a href="contributing.html">Contribuer</a></li>
-      </ul>
-    </nav>
-    <nav class="lang" aria-label="Langue">
-      <a href="../en/status.html" hreflang="en" aria-current="false">English</a>
-      <a href="../fr/status.html" hreflang="fr" aria-current="true">Français</a>
-    </nav>
-    <button type="button" class="theme" id="theme" data-dark="Mode sombre" data-light="Mode clair">Mode sombre</button>
-  </aside>
-  <main>
-<h1>Vérifier un projet</h1>
-<p class="lead"><code>aarshi status</code> lit votre projet et signale ce qui manque ou ce qui ne va pas. C'est une vérification en lecture seule : elle ne modifie aucun fichier, vous pouvez la lancer aussi souvent que vous voulez. <code>aarshi check</code> est un raccourci qui donne le même rapport.</p>
-
-<h2>Lire le rapport</h2>
-<p>Le rapport contient une section par sujet, dans cet ordre : <code>config</code>, <code>i18n</code>, <code>pages</code>, <code>sections</code>, <code>components</code> et <code>dependencies</code>. Un sujet sans rien à signaler affiche un <code>✓</code>. Sinon, ses constats sont listés dessous :</p>
-<dl>
-  <dt>error</dt>
-  <dd>Quelque chose est cassé ou manque. Le rapport le compte, et le code de sortie est <code>1</code>.</dd>
-  <dt>todo</dt>
-  <dd>Quelque chose n'est pas terminé, comme une traduction vide. Le rapport le compte, mais le code de sortie reste <code>0</code>.</dd>
-</dl>
-<p>La dernière ligne donne le verdict sur tout le projet : <code>✓ project is conformant</code>, <code>✓ project is conformant (N to do)</code> ou <code>error: N errors, M to do</code>.</p>
-
-<h2>Codes de sortie</h2>
-<div class="table-wrap">
-<table>
-  <thead><tr><th>Code</th><th>Signification</th></tr></thead>
-  <tbody>
-    <tr><td><code>0</code></td><td>Aucune erreur. Des todos seuls donnent encore <code>0</code>.</td></tr>
-    <tr><td><code>1</code></td><td>Au moins une erreur a été trouvée.</td></tr>
-    <tr><td><code>2</code></td><td>Le projet ne peut pas être lu : <code>aarshi.toml</code> est absent, illisible ou invalide. Le message part sur la sortie d'erreur, et rien n'est écrit sur la sortie standard.</td></tr>
-  </tbody>
-</table>
-</div>
-<p>Le code de sortie sert dans les scripts et l'intégration continue : un code différent de zéro arrête le pipeline.</p>
-
-<h2>Options</h2>
-<dl>
-  <dt><code>--dimension &lt;nom&gt;</code></dt>
-  <dd>N'affiche que certains sujets. Répétez l'option ou séparez les noms par des virgules : <code>--dimension config,i18n</code>. Le filtre ne change que l'affichage : le code de sortie et le résumé couvrent toujours tout le projet, et une ligne indique combien de constats sont masqués.</dd>
-  <dt><code>--errors-only</code></dt>
-  <dd>Masque les lignes <code>todo</code>. Le verdict et le code de sortie ne changent pas.</dd>
-  <dt><code>--json</code></dt>
-  <dd>Affiche un document JSON unique à la place du rapport, pour d'autres outils. Il contient un champ <code>format_version</code> (actuellement <code>1</code>), un <code>summary</code> global, et la liste des constats avec leur règle, leur gravité et leur emplacement. Avec le code de sortie <code>2</code>, rien n'est écrit sur la sortie standard.</dd>
-</dl>
-
-<h2>Les sujets</h2>
-<div class="table-wrap">
-<table>
-  <thead><tr><th>Sujet</th><th>Ce qu'il vérifie</th></tr></thead>
-  <tbody>
-    <tr><td><code>config</code></td><td>Les fichiers et dossiers de base, <code>aarshi.toml</code>, le branchement de Tailwind, et les options cohérentes avec les fichiers.</td></tr>
-    <tr><td><code>i18n</code></td><td>Les dictionnaires : mêmes clés dans chaque langue, valeurs vides, doublons, langues déclarées dans les fichiers de configuration.</td></tr>
-    <tr><td><code>pages</code></td><td>Que chaque route a une vue, que chaque vue a une route, et que le plan du site liste les pages.</td></tr>
-    <tr><td><code>sections</code></td><td>Que chaque section est importée et utilisée dans sa vue, et que ses clés existent.</td></tr>
-    <tr><td><code>components</code></td><td>Les imports de vos composants, et que chaque icône a son composant.</td></tr>
-    <tr><td><code>dependencies</code></td><td>Que les paquets importés par votre code sont déclarés dans <code>package.json</code>, et que le fichier de verrouillage correspond à <code>package_manager</code>.</td></tr>
-  </tbody>
-</table>
-</div>
-<p>Chaque sujet liste ses règles exactes dans le fichier <code>CONVENTIONS.fr.md</code> du dépôt.</p>
-
-    <nav class="pager" aria-label="Navigation entre les pages"><a class="prev" href="workflow.html"><span>Précédent</span>Exemple pas à pas</a><a class="next" href="troubleshooting.html"><span>Suivant</span>Dépannage</a></nav>
-  </main>
-</div>
-<script src="../site.js"></script>
-</body>
+    <script>
+      (function () {
+        var root = document.documentElement;
+        var button = document.getElementById("theme");
+        function current() {
+          if (root.dataset.theme) return root.dataset.theme;
+          return matchMedia("(prefers-color-scheme: dark)").matches
+            ? "dark"
+            : "light";
+        }
+        function refresh() {
+          button.textContent =
+            current() === "dark" ? button.dataset.light : button.dataset.dark;
+        }
+        button.addEventListener("click", function () {
+          var next = current() === "dark" ? "light" : "dark";
+          root.dataset.theme = next;
+          localStorage.setItem("aarshi-theme", next);
+          refresh();
+        });
+        refresh();
+      })();
+    </script>
+  </body>
 </html>

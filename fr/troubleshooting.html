@@ -1,87 +1,202 @@
 <!doctype html>
 <html lang="fr">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Dépannage · aarshi</title>
-  <link rel="stylesheet" href="../style.css">
-  <link rel="icon" type="image/png" href="../aarshi-icon.png">
-  <script>
-    (function () {
-      document.documentElement.classList.add("js");
-      var saved = localStorage.getItem("aarshi-theme");
-      if (saved) document.documentElement.dataset.theme = saved;
-    })();
-  </script>
-</head>
-<body>
-<header class="topbar">
-  <a class="topbar-brand" href="index.html"><img src="../aarshi-icon.png" alt="" width="32" height="32">aarshi</a>
-  <button type="button" class="menu-toggle" id="menu-toggle" aria-expanded="false" aria-controls="sidebar" aria-label="Ouvrir le menu"><span class="menu-icon" aria-hidden="true"><span></span><span></span><span></span></span></button>
-</header>
-<div class="scrim" id="scrim" hidden></div>
-<div class="shell">
-  <aside class="side" id="sidebar">
-    <div class="brand">
-      <a href="https://github.com/aaimeraud/aarshi" target="_blank" rel="noopener" title="Dépôt GitHub"><img src="../aarshi-icon.png" alt="" width="32" height="32">aarshi</a>
-      <a class="repo" href="https://github.com/aaimeraud/aarshi" target="_blank" rel="noopener">Dépôt GitHub ↗</a>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Dépannage · aarshi</title>
+    <link rel="stylesheet" href="../style.css" />
+    <link rel="icon" type="image/png" href="../icon.png" />
+    <script>
+      (function () {
+        var saved = localStorage.getItem("aarshi-theme");
+        if (saved) document.documentElement.dataset.theme = saved;
+      })();
+    </script>
+  </head>
+  <body>
+    <div class="shell">
+      <aside class="side">
+        <div class="brand">
+          <a
+            href="https://github.com/aaimeraud/aarshi"
+            target="_blank"
+            rel="noopener"
+            title="Dépôt GitHub"
+            ><img src="../icon.png" alt="" width="32" height="32" />aarshi</a
+          >
+          <a
+            class="repo"
+            href="https://github.com/aaimeraud/aarshi"
+            target="_blank"
+            rel="noopener"
+            >Dépôt GitHub ↗</a
+          >
+        </div>
+        <nav aria-label="Documentation">
+          <ul>
+            <li><a href="index.html">Vue d'ensemble</a></li>
+            <li><a href="config.html">Le fichier aarshi.toml</a></li>
+            <li><a href="commands.html">Commandes</a></li>
+            <li><a href="workflow.html">Exemple pas à pas</a></li>
+            <li><a href="status.html">Vérifier un projet</a></li>
+            <li>
+              <a href="troubleshooting.html" aria-current="page">Dépannage</a>
+            </li>
+            <li><a href="contributing.html">Contribuer</a></li>
+          </ul>
+        </nav>
+        <nav class="lang" aria-label="Langue">
+          <a
+            href="../en/troubleshooting.html"
+            hreflang="en"
+            aria-current="false"
+            >English</a
+          >
+          <a href="../fr/troubleshooting.html" hreflang="fr" aria-current="true"
+            >Français</a
+          >
+        </nav>
+        <button
+          type="button"
+          class="theme"
+          id="theme"
+          data-dark="Mode sombre"
+          data-light="Mode clair"
+        >
+          Mode sombre
+        </button>
+      </aside>
+      <main>
+        <h1>Dépannage</h1>
+        <p class="lead">
+          Les messages ci-dessous sont ceux que l'on rencontre le plus souvent.
+          Chacun indique ce qu'il signifie et quoi faire.
+        </p>
+
+        <h2>« no aarshi.toml in this folder »</h2>
+        <p>
+          Vous n'êtes pas dans un projet créé par <code>aarshi setup</code>.
+          Placez-vous d'abord dans le dossier du projet (celui qui contient
+          <code>aarshi.toml</code>), puis relancez la commande.
+        </p>
+
+        <h2>« Tailwind is not wired »</h2>
+        <p>
+          <code>aarshi status</code> signale ce message quand les styles ne
+          seraient pas compilés. Utilisez l'une des deux façons de brancher
+          Tailwind CSS 4 :
+        </p>
+        <ul>
+          <li>
+            dans <code>next.config.ts</code>, le loader Turbopack
+            <code>@tailwindcss/turbopack</code> pour les fichiers
+            <code>*.css</code> ;
+          </li>
+          <li>
+            ou un fichier <code>postcss.config.*</code> qui utilise le plugin
+            <code>@tailwindcss/postcss</code>.
+          </li>
+        </ul>
+        <p>Une seule suffit.</p>
+
+        <h2>
+          « use -s &lt;section&gt; &lt;page&gt; for a section, -p &lt;page&gt;
+          for a page »
+        </h2>
+        <p>
+          <code>aarshi add &lt;nom&gt;</code> sans option ne sait pas quoi
+          ajouter. Choisissez l'option : <code>-p</code> pour une page,
+          <code>-s</code> pour une section, <code>-c</code> pour un composant.
+          Ou lancez <code>aarshi add</code> seul et répondez au menu.
+        </p>
+
+        <h2>« page `…` does not exist »</h2>
+        <p>
+          Vous avez demandé une section dans une page absente de
+          <code>views/</code>. aarshi demande s'il faut la créer : répondez
+          <code>y</code> pour créer la page et y ajouter la section, ou
+          <code>n</code> pour arrêter sans rien modifier.
+        </p>
+
+        <h2>Valeurs vides signalées comme <code>todo</code></h2>
+        <p>
+          Un dictionnaire contient des clés sans texte, typiquement après
+          <code>aarshi add-lang</code>. Ce n'est pas une erreur, et le code de
+          sortie reste <code>0</code>. Remplissez les valeurs dans
+          <code>lib/i18n/dictionaries/&lt;code&gt;.ts</code>. Lancez
+          <code>aarshi status --errors-only</code> pour les masquer pendant le
+          travail.
+        </p>
+
+        <h2>« missing <code>components/ui/…</code> »</h2>
+        <p>
+          Les composants d'interface attendus par la clé <code>ui</code> d'<a
+            href="config.html"
+            ><code>aarshi.toml</code></a
+          >
+          ne sont pas là. Ils sont écrits par <code>aarshi setup</code> : shadcn
+          installe <code>button</code> et <code>button-group</code>, et Base UI
+          les écrit à partir de ses propres modèles. Restaurez le fichier
+          manquant depuis un autre projet créé avec la même valeur de
+          <code>ui</code>, ou lancez <code>aarshi setup</code> dans un nouveau
+          dossier et copiez le fichier.
+        </p>
+
+        <h2>Code de sortie 2 avec <code>aarshi status</code></h2>
+        <p>
+          Le projet ne peut pas être lu. Le message sur la sortie d'erreur
+          indique la cause : <code>aarshi.toml</code> est absent, illisible, ou
+          contient une clé inconnue. Corrigez ce fichier, puis relancez la
+          vérification.
+        </p>
+
+        <h2>La documentation ne s'ouvre pas</h2>
+        <p>
+          <code>aarshi docs</code> écrit les pages dans un dossier temporaire et
+          affiche son chemin. Si le navigateur ne s'ouvre pas tout seul, ouvrez
+          à la main le fichier <code>index.html</code> du dossier
+          <code>en</code> ou <code>fr</code> de ce chemin.
+        </p>
+
+        <h2>Toujours bloqué ?</h2>
+        <p>
+          Lancez <code>aarshi status --json</code> et gardez la sortie : elle
+          liste chaque constat avec le nom de sa règle, ce qui est la première
+          information à donner quand on demande de l'aide. Les règles sont
+          listées dans le fichier <code>CONVENTIONS.fr.md</code> du dépôt.
+        </p>
+
+        <nav class="pager" aria-label="Navigation entre les pages">
+          <a class="prev" href="status.html"
+            ><span>Précédent</span>Vérifier un projet</a
+          ><a class="next" href="contributing.html"
+            ><span>Suivant</span>Contribuer</a
+          >
+        </nav>
+      </main>
     </div>
-    <nav aria-label="Documentation">
-      <ul>
-        <li><a href="index.html">Vue d'ensemble</a></li>
-        <li><a href="config.html">Le fichier aarshi.toml</a></li>
-        <li><a href="commands.html">Commandes</a></li>
-        <li><a href="workflow.html">Exemple pas à pas</a></li>
-        <li><a href="status.html">Vérifier un projet</a></li>
-        <li><a href="troubleshooting.html" aria-current="page">Dépannage</a></li>
-        <li><a href="contributing.html">Contribuer</a></li>
-      </ul>
-    </nav>
-    <nav class="lang" aria-label="Langue">
-      <a href="../en/troubleshooting.html" hreflang="en" aria-current="false">English</a>
-      <a href="../fr/troubleshooting.html" hreflang="fr" aria-current="true">Français</a>
-    </nav>
-    <button type="button" class="theme" id="theme" data-dark="Mode sombre" data-light="Mode clair">Mode sombre</button>
-  </aside>
-  <main>
-<h1>Dépannage</h1>
-<p class="lead">Les messages ci-dessous sont ceux que l'on rencontre le plus souvent. Chacun indique ce qu'il signifie et quoi faire.</p>
-
-<h2>« no aarshi.toml in this folder »</h2>
-<p>Vous n'êtes pas dans un projet créé par <code>aarshi setup</code>. Placez-vous d'abord dans le dossier du projet (celui qui contient <code>aarshi.toml</code>), puis relancez la commande.</p>
-
-<h2>« Tailwind is not wired »</h2>
-<p><code>aarshi status</code> signale ce message quand les styles ne seraient pas compilés. Utilisez l'une des deux façons de brancher Tailwind CSS 4 :</p>
-<ul>
-  <li>dans <code>next.config.ts</code>, le loader Turbopack <code>@tailwindcss/turbopack</code> pour les fichiers <code>*.css</code> ;</li>
-  <li>ou un fichier <code>postcss.config.*</code> qui utilise le plugin <code>@tailwindcss/postcss</code>.</li>
-</ul>
-<p>Une seule suffit.</p>
-
-<h2>« use -s &lt;section&gt; &lt;page&gt; for a section, -p &lt;page&gt; for a page »</h2>
-<p><code>aarshi add &lt;nom&gt;</code> sans option ne sait pas quoi ajouter. Choisissez l'option : <code>-p</code> pour une page, <code>-s</code> pour une section, <code>-c</code> pour un composant. Ou lancez <code>aarshi add</code> seul et répondez au menu.</p>
-
-<h2>« page `…` does not exist »</h2>
-<p>Vous avez demandé une section dans une page absente de <code>views/</code>. aarshi demande s'il faut la créer : répondez <code>y</code> pour créer la page et y ajouter la section, ou <code>n</code> pour arrêter sans rien modifier.</p>
-
-<h2>Valeurs vides signalées comme <code>todo</code></h2>
-<p>Un dictionnaire contient des clés sans texte, typiquement après <code>aarshi add-lang</code>. Ce n'est pas une erreur, et le code de sortie reste <code>0</code>. Remplissez les valeurs dans <code>lib/i18n/dictionaries/&lt;code&gt;.ts</code>. Lancez <code>aarshi status --errors-only</code> pour les masquer pendant le travail.</p>
-
-<h2>« missing <code>components/ui/…</code> »</h2>
-<p>Les composants d'interface attendus par la clé <code>ui</code> d'<a href="config.html"><code>aarshi.toml</code></a> ne sont pas là. Ils sont écrits par <code>aarshi setup</code> : shadcn installe <code>button</code> et <code>button-group</code>, et Base UI les écrit à partir de ses propres modèles. Restaurez le fichier manquant depuis un autre projet créé avec la même valeur de <code>ui</code>, ou lancez <code>aarshi setup</code> dans un nouveau dossier et copiez le fichier.</p>
-
-<h2>Code de sortie 2 avec <code>aarshi status</code></h2>
-<p>Le projet ne peut pas être lu. Le message sur la sortie d'erreur indique la cause : <code>aarshi.toml</code> est absent, illisible, ou contient une clé inconnue. Corrigez ce fichier, puis relancez la vérification.</p>
-
-<h2>La documentation ne s'ouvre pas</h2>
-<p><code>aarshi docs</code> écrit les pages dans un dossier temporaire et affiche son chemin. Si le navigateur ne s'ouvre pas tout seul, ouvrez à la main le fichier <code>index.html</code> du dossier <code>en</code> ou <code>fr</code> de ce chemin.</p>
-
-<h2>Toujours bloqué ?</h2>
-<p>Lancez <code>aarshi status --json</code> et gardez la sortie : elle liste chaque constat avec le nom de sa règle, ce qui est la première information à donner quand on demande de l'aide. Les règles sont listées dans le fichier <code>CONVENTIONS.fr.md</code> du dépôt.</p>
-
-    <nav class="pager" aria-label="Navigation entre les pages"><a class="prev" href="status.html"><span>Précédent</span>Vérifier un projet</a><a class="next" href="contributing.html"><span>Suivant</span>Contribuer</a></nav>
-  </main>
-</div>
-<script src="../site.js"></script>
-</body>
+    <script>
+      (function () {
+        var root = document.documentElement;
+        var button = document.getElementById("theme");
+        function current() {
+          if (root.dataset.theme) return root.dataset.theme;
+          return matchMedia("(prefers-color-scheme: dark)").matches
+            ? "dark"
+            : "light";
+        }
+        function refresh() {
+          button.textContent =
+            current() === "dark" ? button.dataset.light : button.dataset.dark;
+        }
+        button.addEventListener("click", function () {
+          var next = current() === "dark" ? "light" : "dark";
+          root.dataset.theme = next;
+          localStorage.setItem("aarshi-theme", next);
+          refresh();
+        });
+        refresh();
+      })();
+    </script>
+  </body>
 </html>
