@@ -8,14 +8,20 @@
   <link rel="icon" type="image/png" href="../aarshi-icon.png">
   <script>
     (function () {
+      document.documentElement.classList.add("js");
       var saved = localStorage.getItem("aarshi-theme");
       if (saved) document.documentElement.dataset.theme = saved;
     })();
   </script>
 </head>
 <body>
+<header class="topbar">
+  <a class="topbar-brand" href="index.html"><img src="../aarshi-icon.png" alt="" width="32" height="32">aarshi</a>
+  <button type="button" class="menu-toggle" id="menu-toggle" aria-expanded="false" aria-controls="sidebar" aria-label="Ouvrir le menu"><span class="menu-icon" aria-hidden="true"><span></span><span></span><span></span></span></button>
+</header>
+<div class="scrim" id="scrim" hidden></div>
 <div class="shell">
-  <aside class="side">
+  <aside class="side" id="sidebar">
     <div class="brand">
       <a href="https://github.com/aaimeraud/aarshi" target="_blank" rel="noopener" title="Dépôt GitHub"><img src="../aarshi-icon.png" alt="" width="32" height="32">aarshi</a>
       <a class="repo" href="https://github.com/aaimeraud/aarshi" target="_blank" rel="noopener">Dépôt GitHub ↗</a>
@@ -52,6 +58,7 @@
 <p>La dernière ligne donne le verdict sur tout le projet : <code>✓ project is conformant</code>, <code>✓ project is conformant (N to do)</code> ou <code>error: N errors, M to do</code>.</p>
 
 <h2>Codes de sortie</h2>
+<div class="table-wrap">
 <table>
   <thead><tr><th>Code</th><th>Signification</th></tr></thead>
   <tbody>
@@ -60,6 +67,7 @@
     <tr><td><code>2</code></td><td>Le projet ne peut pas être lu : <code>aarshi.toml</code> est absent, illisible ou invalide. Le message part sur la sortie d'erreur, et rien n'est écrit sur la sortie standard.</td></tr>
   </tbody>
 </table>
+</div>
 <p>Le code de sortie sert dans les scripts et l'intégration continue : un code différent de zéro arrête le pipeline.</p>
 
 <h2>Options</h2>
@@ -73,6 +81,7 @@
 </dl>
 
 <h2>Les sujets</h2>
+<div class="table-wrap">
 <table>
   <thead><tr><th>Sujet</th><th>Ce qu'il vérifie</th></tr></thead>
   <tbody>
@@ -84,30 +93,12 @@
     <tr><td><code>dependencies</code></td><td>Que les paquets importés par votre code sont déclarés dans <code>package.json</code>, et que le fichier de verrouillage correspond à <code>package_manager</code>.</td></tr>
   </tbody>
 </table>
+</div>
 <p>Chaque sujet liste ses règles exactes dans le fichier <code>CONVENTIONS.fr.md</code> du dépôt.</p>
 
     <nav class="pager" aria-label="Navigation entre les pages"><a class="prev" href="workflow.html"><span>Précédent</span>Exemple pas à pas</a><a class="next" href="troubleshooting.html"><span>Suivant</span>Dépannage</a></nav>
   </main>
 </div>
-<script>
-  (function () {
-    var root = document.documentElement;
-    var button = document.getElementById("theme");
-    function current() {
-      if (root.dataset.theme) return root.dataset.theme;
-      return matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
-    }
-    function refresh() {
-      button.textContent = current() === "dark" ? button.dataset.light : button.dataset.dark;
-    }
-    button.addEventListener("click", function () {
-      var next = current() === "dark" ? "light" : "dark";
-      root.dataset.theme = next;
-      localStorage.setItem("aarshi-theme", next);
-      refresh();
-    });
-    refresh();
-  })();
-</script>
+<script src="../site.js"></script>
 </body>
 </html>

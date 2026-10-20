@@ -8,14 +8,20 @@
   <link rel="icon" type="image/png" href="../aarshi-icon.png">
   <script>
     (function () {
+      document.documentElement.classList.add("js");
       var saved = localStorage.getItem("aarshi-theme");
       if (saved) document.documentElement.dataset.theme = saved;
     })();
   </script>
 </head>
 <body>
+<header class="topbar">
+  <a class="topbar-brand" href="index.html"><img src="../aarshi-icon.png" alt="" width="32" height="32">aarshi</a>
+  <button type="button" class="menu-toggle" id="menu-toggle" aria-expanded="false" aria-controls="sidebar" aria-label="Open menu"><span class="menu-icon" aria-hidden="true"><span></span><span></span><span></span></span></button>
+</header>
+<div class="scrim" id="scrim" hidden></div>
 <div class="shell">
-  <aside class="side">
+  <aside class="side" id="sidebar">
     <div class="brand">
       <a href="https://github.com/aaimeraud/aarshi" target="_blank" rel="noopener" title="Repository on GitHub"><img src="../aarshi-icon.png" alt="" width="32" height="32">aarshi</a>
       <a class="repo" href="https://github.com/aaimeraud/aarshi" target="_blank" rel="noopener">Repository on GitHub ↗</a>
@@ -44,6 +50,7 @@
 <h2>aarshi setup</h2>
 <p>Creates a Next.js project in a new folder. <code>aarshi setup .</code> uses the current folder instead.</p>
 <p>It asks for the languages (checkboxes among fr, en, es, ja, ko and de), the default language, the site URL, the package manager, the UI components and the icons. Each question has a flag:</p>
+<div class="table-wrap">
 <table>
   <thead><tr><th>Flag</th><th>Skips the question about</th></tr></thead>
   <tbody>
@@ -57,6 +64,7 @@
     <tr><td><code>--yes</code>, <code>-y</code></td><td>every question: the defaults are used</td></tr>
   </tbody>
 </table>
+</div>
 <p>The answers are saved in <a href="config.html"><code>aarshi.toml</code></a>.</p>
 
 <h2 id="add">aarshi add, step by step</h2>
@@ -73,6 +81,7 @@
   <strong>Same result, no menu.</strong> The flags skip the menu: <code>aarshi add -s team about</code> adds a section, <code>aarshi add -p about</code> a page, <code>aarshi add -c badge</code> a component. Leave a name out and aarshi asks for it.
 </div>
 
+<div class="table-wrap">
 <table>
   <thead><tr><th>Command</th><th>What it adds</th><th>Files it creates or changes</th></tr></thead>
   <tbody>
@@ -81,6 +90,7 @@
     <tr><td><code>aarshi add -c &lt;name&gt;</code></td><td>a custom component</td><td><code>components/custom/&lt;name&gt;.tsx</code></td></tr>
   </tbody>
 </table>
+</div>
 <p>If the page given to <code>add -s</code> does not exist, aarshi reports it and asks whether to create it (y/n).</p>
 
 <h2 id="add-lang">aarshi add-lang</h2>
@@ -113,25 +123,6 @@ aarshi restore</code></pre>
     <nav class="pager" aria-label="Page navigation"><a class="prev" href="config.html"><span>Previous</span>The aarshi.toml file</a><a class="next" href="workflow.html"><span>Next</span>Example workflow</a></nav>
   </main>
 </div>
-<script>
-  (function () {
-    var root = document.documentElement;
-    var button = document.getElementById("theme");
-    function current() {
-      if (root.dataset.theme) return root.dataset.theme;
-      return matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
-    }
-    function refresh() {
-      button.textContent = current() === "dark" ? button.dataset.light : button.dataset.dark;
-    }
-    button.addEventListener("click", function () {
-      var next = current() === "dark" ? "light" : "dark";
-      root.dataset.theme = next;
-      localStorage.setItem("aarshi-theme", next);
-      refresh();
-    });
-    refresh();
-  })();
-</script>
+<script src="../site.js"></script>
 </body>
 </html>
