@@ -8,14 +8,20 @@
   <link rel="icon" type="image/png" href="../aarshi-icon.png">
   <script>
     (function () {
+      document.documentElement.classList.add("js");
       var saved = localStorage.getItem("aarshi-theme");
       if (saved) document.documentElement.dataset.theme = saved;
     })();
   </script>
 </head>
 <body>
+<header class="topbar">
+  <a class="topbar-brand" href="index.html"><img src="../aarshi-icon.png" alt="" width="32" height="32">aarshi</a>
+  <button type="button" class="menu-toggle" id="menu-toggle" aria-expanded="false" aria-controls="sidebar" aria-label="Open menu"><span class="menu-icon" aria-hidden="true"><span></span><span></span><span></span></span></button>
+</header>
+<div class="scrim" id="scrim" hidden></div>
 <div class="shell">
-  <aside class="side">
+  <aside class="side" id="sidebar">
     <div class="brand">
       <a href="https://github.com/aaimeraud/aarshi" target="_blank" rel="noopener" title="Repository on GitHub"><img src="../aarshi-icon.png" alt="" width="32" height="32">aarshi</a>
       <a class="repo" href="https://github.com/aaimeraud/aarshi" target="_blank" rel="noopener">Repository on GitHub ↗</a>
@@ -101,6 +107,7 @@ cd portfolio</code></pre>
 <p>Open <code>http://localhost:3000/fr/about</code>, then <code>/en/about</code> and <code>/de/about</code>. The language switcher in the header changes the language of the current page.</p>
 
 <h2>What you did</h2>
+<div class="table-wrap">
 <table>
   <thead><tr><th>Step</th><th>Command</th><th>Result</th></tr></thead>
   <tbody>
@@ -113,30 +120,12 @@ cd portfolio</code></pre>
     <tr><td>7</td><td><code>status</code></td><td>report of the project</td></tr>
   </tbody>
 </table>
+</div>
 <p>You wrote the texts and the design. aarshi wrote the files that connect them: the folders, the routes, the sitemap and the dictionary keys, which the compiler checks against the default language.</p>
 
     <nav class="pager" aria-label="Page navigation"><a class="prev" href="commands.html"><span>Previous</span>Commands</a><a class="next" href="status.html"><span>Next</span>Checking a project</a></nav>
   </main>
 </div>
-<script>
-  (function () {
-    var root = document.documentElement;
-    var button = document.getElementById("theme");
-    function current() {
-      if (root.dataset.theme) return root.dataset.theme;
-      return matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
-    }
-    function refresh() {
-      button.textContent = current() === "dark" ? button.dataset.light : button.dataset.dark;
-    }
-    button.addEventListener("click", function () {
-      var next = current() === "dark" ? "light" : "dark";
-      root.dataset.theme = next;
-      localStorage.setItem("aarshi-theme", next);
-      refresh();
-    });
-    refresh();
-  })();
-</script>
+<script src="../site.js"></script>
 </body>
 </html>

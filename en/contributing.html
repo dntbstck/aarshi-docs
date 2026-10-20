@@ -8,14 +8,20 @@
   <link rel="icon" type="image/png" href="../aarshi-icon.png">
   <script>
     (function () {
+      document.documentElement.classList.add("js");
       var saved = localStorage.getItem("aarshi-theme");
       if (saved) document.documentElement.dataset.theme = saved;
     })();
   </script>
 </head>
 <body>
+<header class="topbar">
+  <a class="topbar-brand" href="index.html"><img src="../aarshi-icon.png" alt="" width="32" height="32">aarshi</a>
+  <button type="button" class="menu-toggle" id="menu-toggle" aria-expanded="false" aria-controls="sidebar" aria-label="Open menu"><span class="menu-icon" aria-hidden="true"><span></span><span></span><span></span></span></button>
+</header>
+<div class="scrim" id="scrim" hidden></div>
 <div class="shell">
-  <aside class="side">
+  <aside class="side" id="sidebar">
     <div class="brand">
       <a href="https://github.com/aaimeraud/aarshi" target="_blank" rel="noopener" title="Repository on GitHub"><img src="../aarshi-icon.png" alt="" width="32" height="32">aarshi</a>
       <a class="repo" href="https://github.com/aaimeraud/aarshi" target="_blank" rel="noopener">Repository on GitHub ↗</a>
@@ -97,25 +103,6 @@ docs(commands): explain aarshi add step by step</code></pre>
     <nav class="pager" aria-label="Page navigation"><a class="prev" href="troubleshooting.html"><span>Previous</span>Troubleshooting</a></nav>
   </main>
 </div>
-<script>
-  (function () {
-    var root = document.documentElement;
-    var button = document.getElementById("theme");
-    function current() {
-      if (root.dataset.theme) return root.dataset.theme;
-      return matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
-    }
-    function refresh() {
-      button.textContent = current() === "dark" ? button.dataset.light : button.dataset.dark;
-    }
-    button.addEventListener("click", function () {
-      var next = current() === "dark" ? "light" : "dark";
-      root.dataset.theme = next;
-      localStorage.setItem("aarshi-theme", next);
-      refresh();
-    });
-    refresh();
-  })();
-</script>
+<script src="../site.js"></script>
 </body>
 </html>
